@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PC Remote Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        /* Samsung Safe Padding for Bottom Gestures */
+        :root { --safe-bottom: env(safe-area-inset-bottom, 50px); }
+    </style>
+</head>
+<body>
+
+    <div class="header-bar">
+        <div class="nav-modes">
+            <button id="btnMouseMode" class="tab-btn active">MOUSE</button>
+            <button id="btnKeyboardMode" class="tab-btn">KEYBOARD</button>
+        </div>
+        <div class="app-icons">
+            <button onclick="launchApp('brave')" class="app-btn" title="Brave">
+                <svg viewBox="0 0 32 32" fill="#ff4500"><path d="M16 .5C13 4 8.2 6.7 3.5 7.2c-.4 3.8-.2 9.5 2.5 13.7 2.7 4.2 7.7 7.7 10 10.6 2.3-2.9 7.3-6.4 10-10.6 2.7-4.2 2.9-9.9 2.5-13.7C23.8 6.7 19 .4 16 .5zm0 6.3c1.7 0 3.1 2.2 3.1 5s-1.4 5-3.1 5-3.1-2.2-3.1-5 1.4-5 3.1-5zm0 18.5c-3.1-2-6-5-6-8.5 0-.6.1-1.3.2-1.9 1.7 1.4 3.8 2.2 5.8 2.2s4.1-.8 5.8-2.2c.1.6.2 1.3.2 1.9 0 3.5-2.9 6.5-6 8.5z"/></svg>
+            </button>
+            <button onclick="launchApp('vscode')" class="app-btn" title="VS Code">
+                <svg viewBox="0 0 32 32" fill="#007acc"><path d="M22.7 3.5L16.2 11l-5.6-4.2L3.5 11l5.6 5-5.6 5 7.1 4.2 5.6-4.2 6.5 7.5L28.5 25V7l-5.8-3.5zm-1 16.5l-3.5-2.6 3.5-2.6v5.2z"/></svg>
+            </button>
+            <button id="btnShutdownInit" class="app-btn shutdown-btn">
+                <svg viewBox="0 0 24 24" fill="#ff3333"><path d="M16.56 5.44l-1.45 1.45A5.969 5.969 0 0 1 18 12a6 6 0 0 1-12 0c0-1.93.91-3.66 2.33-4.78L6.88 5.77A7.955 7.955 0 0 0 4 12a8 8 0 0 0 16 0c0-2.43-.1-4.77-3.44-6.56zM11 3h2v9h-2z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="mouseView" class="view-container">
+        <div id="trackpad">
+            <span class="track-hint">VIRTUAL TRACKPAD</span>
+        </div>
+        <div class="mouse-actions">
+            <button onclick="sendClick('left')" class="ctrl-btn">LEFT</button>
+            <button id="btnDrag" class="ctrl-btn drag-toggle">DRAG & DROP</button>
+            <button onclick="sendClick('right')" class="ctrl-btn">RIGHT</button>
+        </div>
+    </div>
+
+    <div id="keyboardView" class="view-container hidden">
+        <div class="input-area">
+            <input type="text" id="textInput" placeholder="Type text here...">
+        </div>
+        <div class="keyboard-btns">
+            <button id="btnBackspace" class="kb-btn back-btn">BACKSPACE</button>
+            <button id="btnEnter" class="kb-btn enter-btn">ENTER</button>
+        </div>
+    </div>
+
+    <div id="shutdownModal" class="modal hidden">
+        <div class="modal-box">
+            <h3>Shut down PC?</h3>
+            <p>This will close all active sessions.</p>
+            <div class="modal-actions">
+                <button onclick="confirmShutdown()" class="confirm-yes">Confirm</button>
+                <button onclick="closeModal()" class="confirm-no">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
